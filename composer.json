@@ -1,0 +1,26 @@
+{
+  "name": "speedwork/installer",
+  "type": "composer-plugin",
+  "description": "A composer plugin, to help install packages of different types in custom paths.",
+  "license": "MIT",
+  "keywords": ["composer", "composer-plugin", "composer-installer"],
+  "authors": [
+    {
+      "name": "Sankar suda",
+      "email": "sankar.suda@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3",
+    "composer-plugin-api": "*"
+  },
+  "autoload": {
+    "psr-4": {"Speedwork\\Installer\\": "src/"}
+  },
+  "extra": {
+      "class": ["Speedwork\\Installer\\LibraryPlugin"],
+      "branch-alias": {
+        "dev-master": "1.0.x-dev"
+       }
+  }
+}
