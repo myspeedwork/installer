@@ -14,3 +14,18 @@ Installation
     "speedwork/installer": "dev-master"
   }
 ```
+
+Manage assests in components, modules and widgets
+
+```
+  "extra": {
+      "assets-dir" : "public/assets",
+      "assets" : [
+        {
+          "type" : "directory",
+          "name" : "assets",
+          "target" : "assets"
+        }
+      ]
+  }
+```
