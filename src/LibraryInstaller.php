@@ -9,7 +9,7 @@ use Composer\Repository\InstalledRepositoryInterface;
 
 class LibraryInstaller extends BaseLibraryInstaller
 {
-    private $filesystem;
+    protected $filesystem;
     /**
      * {@inheritdoc}
      */
