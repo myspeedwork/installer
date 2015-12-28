@@ -96,7 +96,7 @@ class LibraryInstaller extends BaseLibraryInstaller
         }
 
         if ($type == 'framework') {
-            $directory = 'speedwork';
+            return './speedwork';
         }
 
         if (isset($extra['directory'])) {
