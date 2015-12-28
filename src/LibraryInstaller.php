@@ -99,7 +99,7 @@ class LibraryInstaller extends BaseLibraryInstaller
             $directory = 'speedwork';
         }
 
-        if ($extra['directory']) {
+        if (isset($extra['directory'])) {
             $directory = $extra['directory'];
         } else {
             $config    = $this->composer->getConfig();
@@ -118,12 +118,13 @@ class LibraryInstaller extends BaseLibraryInstaller
      */
     protected function installAssets(PackageInterface $package, $remove = false)
     {
-        $extra  = $package->getExtra();
-        $assets = $extra['assets'];
+        $extra = $package->getExtra();
 
-        if (empty($assets)) {
+        if (!isset($extra['assets']) || is_array($extra['assets'])) {
             return;
         }
+
+        $assets = $extra['assets'];
 
         // Parse the pretty name for the vendor and package name.
         $name = $prettyName = $package->getPrettyName();
