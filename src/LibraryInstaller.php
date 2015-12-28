@@ -4,6 +4,7 @@ namespace Speedwork\Installer;
 
 use Composer\Composer;
 use Composer\Installer\LibraryInstaller as BaseLibraryInstaller;
+use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 
