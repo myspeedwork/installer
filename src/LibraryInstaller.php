@@ -120,7 +120,7 @@ class LibraryInstaller extends BaseLibraryInstaller
     {
         $extra = $package->getExtra();
 
-        if (!isset($extra['assets']) || is_array($extra['assets'])) {
+        if (!isset($extra['assets']) || !is_array($extra['assets'])) {
             return;
         }
 
