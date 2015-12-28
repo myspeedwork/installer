@@ -17,6 +17,8 @@
   "autoload": {
     "psr-4": {"Speedwork\\Installer\\": "src/"}
   },
+  "minimum-stability": "dev",
+  "preferred-install": "dist",
   "extra": {
       "class": ["Speedwork\\Installer\\LibraryPlugin"],
       "branch-alias": {
