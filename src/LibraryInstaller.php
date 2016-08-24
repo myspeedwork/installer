@@ -11,6 +11,7 @@ use Composer\Repository\InstalledRepositoryInterface;
 class LibraryInstaller extends BaseLibraryInstaller
 {
     protected $filesystem;
+
     /**
      * {@inheritdoc}
      */
@@ -183,6 +184,7 @@ class LibraryInstaller extends BaseLibraryInstaller
         parent::install($repo, $package);
         $this->installAssets($package);
     }
+
     /**
      * {@inheritdoc}
      */
@@ -192,6 +194,7 @@ class LibraryInstaller extends BaseLibraryInstaller
         parent::update($repo, $initial, $target);
         $this->installAssets($target);
     }
+
     /**
      * {@inheritdoc}
      */
