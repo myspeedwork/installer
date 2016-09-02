@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Speedwork package.
+ *
+ * (c) Sankar <sankar.suda@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code
+ */
+
 namespace Speedwork\Installer;
 
 use Composer\Composer;
@@ -11,6 +20,7 @@ use Composer\Repository\InstalledRepositoryInterface;
 class LibraryInstaller extends BaseLibraryInstaller
 {
     protected $filesystem;
+
     /**
      * {@inheritdoc}
      */
@@ -183,6 +193,7 @@ class LibraryInstaller extends BaseLibraryInstaller
         parent::install($repo, $package);
         $this->installAssets($package);
     }
+
     /**
      * {@inheritdoc}
      */
@@ -192,6 +203,7 @@ class LibraryInstaller extends BaseLibraryInstaller
         parent::update($repo, $initial, $target);
         $this->installAssets($target);
     }
+
     /**
      * {@inheritdoc}
      */

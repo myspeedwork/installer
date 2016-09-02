@@ -1,5 +1,13 @@
 speedwork-installer
 ===================================
+[![codecov](https://codecov.io/gh/speedwork/installer/branch/master/graph/badge.svg)](https://codecov.io/gh/speedwork/installer)
+[![StyleCI](https://styleci.io/repos/15472515/shield)](https://styleci.io/repos/15472515)
+[![Latest Stable Version](https://poser.pugx.org/speedwork/installer/v/stable)](https://packagist.org/packages/speedwork/installer)
+[![Latest Unstable Version](https://poser.pugx.org/speedwork/installer/v/unstable)](https://packagist.org/packages/speedwork/installer)
+[![License](https://poser.pugx.org/speedwork/installer/license)](https://packagist.org/packages/speedwork/installer)
+[![Total Downloads](https://poser.pugx.org/speedwork/installer/downloads)](https://packagist.org/packages/speedwork/installer)
+[![Build status](https://ci.appveyor.com/api/projects/status/10aw52t4ga4kek27?svg=true)](https://ci.appveyor.com/project/2stech/installer)
+[![Build Status](https://travis-ci.org/speedwork/installer.svg?branch=master)](https://travis-ci.org/speedwork/installer)
 
 A composer plugin, to install differenty types of composer packages in custom directories outside the default composer default installation path which is in the `vendor` folder.
 
