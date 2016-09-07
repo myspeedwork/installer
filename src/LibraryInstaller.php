@@ -100,9 +100,10 @@ class LibraryInstaller extends BaseLibraryInstaller
         $type = ltrim($type, 'speedwork-');
 
         if ($type == 'template' || $type == 'theme') {
-            $directory = 'public/templates';
+            $directory = 'public/themes';
         } else {
-            $directory = 'system/'.$type.'s';
+            $directory = 'system/'.ucfirst($type).'s';
+            $name      = ucfirst($name);
         }
 
         if ($type == 'framework') {
