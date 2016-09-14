@@ -54,10 +54,10 @@ class LibraryInstaller extends BaseLibraryInstaller
             }
         }
 
-      /*
-       * In case, the user didn't provide a custom path
-       * use the default one, by calling the parent::getInstallPath function
-       */
+        /*
+        * In case, the user didn't provide a custom path
+        * use the default one, by calling the parent::getInstallPath function
+        */
         return parent::getInstallPath($package);
     }
 
@@ -89,6 +89,7 @@ class LibraryInstaller extends BaseLibraryInstaller
         $name = $prettyName = $package->getPrettyName();
         if (strpos($prettyName, '/') !== false) {
             list($vendor, $name) = explode('/', $prettyName);
+            unset($vendor);
         }
 
         // Allow the package to define its own name.
@@ -108,6 +109,10 @@ class LibraryInstaller extends BaseLibraryInstaller
 
         if ($type == 'framework') {
             return './speedwork';
+        }
+
+        if (strpos($name, '-') !== false) {
+            list($type, $name) = explode('-', $name);
         }
 
         if (isset($extra['directory'])) {
@@ -141,6 +146,7 @@ class LibraryInstaller extends BaseLibraryInstaller
         $name = $prettyName = $package->getPrettyName();
         if (strpos($prettyName, '/') !== false) {
             list($vendor, $name) = explode('/', $prettyName);
+            unset($vendor);
         }
 
         if (isset($extra['name'])) {
