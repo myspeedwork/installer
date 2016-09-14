@@ -2,6 +2,7 @@ speedwork-installer
 ===================================
 [![codecov](https://codecov.io/gh/speedwork/installer/branch/master/graph/badge.svg)](https://codecov.io/gh/speedwork/installer)
 [![StyleCI](https://styleci.io/repos/15472515/shield)](https://styleci.io/repos/15472515)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/771d6248-d38a-43bd-8a0a-56d8b40d2e17/mini.png)](https://insight.sensiolabs.com/projects/771d6248-d38a-43bd-8a0a-56d8b40d2e17)
 [![Latest Stable Version](https://poser.pugx.org/speedwork/installer/v/stable)](https://packagist.org/packages/speedwork/installer)
 [![Latest Unstable Version](https://poser.pugx.org/speedwork/installer/v/unstable)](https://packagist.org/packages/speedwork/installer)
 [![License](https://poser.pugx.org/speedwork/installer/license)](https://packagist.org/packages/speedwork/installer)
