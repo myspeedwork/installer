@@ -70,7 +70,6 @@ class LibraryInstaller extends BaseLibraryInstaller
             'speedwork-component',
             'speedwork-module',
             'speedwork-widget',
-            'speedwork-helper',
             'speedwork-theme',
             'speedwork-template',
             'speedwork-framework',
@@ -132,7 +131,7 @@ class LibraryInstaller extends BaseLibraryInstaller
      *
      * @return bool
      */
-    protected function installAssets(PackageInterface $package, $remove = false)
+    protected function installAssets(PackageInterface $package, $force = true, $remove = false)
     {
         $extra = $package->getExtra();
 
@@ -153,10 +152,12 @@ class LibraryInstaller extends BaseLibraryInstaller
             $name = $extra['name'];
         }
 
+        $name = strtolower($name);
         $type = $package->getType();
         $type = ltrim($type, 'speedwork-');
 
-        $assetsDir = $extra['assets-dir'] ?: 'public/assets/:type/:name';
+        $assetsDir = 'public/assets/';
+        $assetsDir .= $extra['assets-dir'] ?: ':type/:name';
 
         $replace = [
             'type'    => $type.'s',
@@ -187,7 +188,12 @@ class LibraryInstaller extends BaseLibraryInstaller
             $target = rtrim($assetsDir.$asset['target'], '/');
 
             if (file_exists($from)) {
-                $this->filesystem->copy($from, $target);
+                if (file_exists($target) && $force) {
+                    $this->filesystem->remove($target);
+                    $this->filesystem->copy($from, $target);
+                } else {
+                    $this->filesystem->copy($from, $target);
+                }
             }
         }
     }
@@ -206,7 +212,6 @@ class LibraryInstaller extends BaseLibraryInstaller
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        $this->installAssets($initial, true);
         parent::update($repo, $initial, $target);
         $this->installAssets($target);
     }
@@ -216,7 +221,7 @@ class LibraryInstaller extends BaseLibraryInstaller
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        $this->installAssets($package, true);
+        $this->installAssets($package, true, true);
         parent::uninstall($repo, $package);
     }
 }
