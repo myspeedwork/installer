@@ -72,7 +72,6 @@ class LibraryInstaller extends BaseLibraryInstaller
             'speedwork-widget',
             'speedwork-theme',
             'speedwork-template',
-            'speedwork-framework',
         ];
 
         // Explicitly state support of "component" packages.
