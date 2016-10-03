@@ -28,14 +28,12 @@ Manage assests in components, modules and widgets
 
 ```
   "extra": {
-      "assets-dir" : "public/assets",
-      "assets" : [
-        {
-          "type" : "directory",
-          "name" : "assets",
-          "target" : "assets"
-        }
-      ]
+      "assets-dir" : "mypackage",
+      "assets" : {
+        "src/mypackage/assets/*.js" : "js/",
+        "src/mypackage/assets/*.css" : "css/",
+        "src/mypackage/assets/fonts/*" : "fonts/"
+     }
   }
 ```
 

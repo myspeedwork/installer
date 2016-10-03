@@ -30,6 +30,7 @@ class Filesystem extends OriginalFilesystem
     public function copy($source, $target)
     {
         if (!is_dir($source)) {
+            $this->ensureDirectoryExists(dirname($target));
             copy($source, $target);
 
             return;
@@ -37,22 +38,15 @@ class Filesystem extends OriginalFilesystem
 
         $it = new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS);
         $ri = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::SELF_FIRST);
-
-        if (!file_exists($target)) {
-            mkdir($target, 0777, true);
-        }
+        $this->ensureDirectoryExists($target);
 
         foreach ($ri as $file) {
             $targetPath = $target.DIRECTORY_SEPARATOR.$ri->getSubPathName();
             if ($file->isDir()) {
-                if (!file_exists($targetPath)) {
-                    mkdir($targetPath);
-                }
+                $this->ensureDirectoryExists($targetPath);
             } else {
                 copy($file->getPathname(), $targetPath);
             }
         }
     }
 }
-
-// Endfile

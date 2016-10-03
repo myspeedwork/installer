@@ -36,7 +36,10 @@ class LibraryInstaller extends BaseLibraryInstaller
         $type = $package->getType();
 
         if ($this->supports($type)) {
-            return $this->getDirectory($type, $package);
+            $directory = $this->getDirectory($type, $package);
+            if (!empty($directory)) {
+                return $directory;
+            }
         }
 
         $names = $package->getNames();
@@ -72,6 +75,7 @@ class LibraryInstaller extends BaseLibraryInstaller
             'speedwork-widget',
             'speedwork-theme',
             'speedwork-template',
+            'speedwork-package',
         ];
 
         // Explicitly state support of "component" packages.
@@ -83,6 +87,11 @@ class LibraryInstaller extends BaseLibraryInstaller
      */
     public function getDirectory($type, PackageInterface $package)
     {
+        $type = str_replace('speedwork-', '', $type);
+        if ($type == 'package') {
+            return null;
+        }
+
         // Parse the pretty name for the vendor and package name.
         $name = $prettyName = $package->getPrettyName();
         if (strpos($prettyName, '/') !== false) {
@@ -96,17 +105,11 @@ class LibraryInstaller extends BaseLibraryInstaller
             $name = $extra['name'];
         }
 
-        $type = ltrim($type, 'speedwork-');
-
         if ($type == 'template' || $type == 'theme') {
-            $directory = 'public/themes';
+            $directory = 'public'.DIRECTORY_SEPARATOR.'themes';
         } else {
-            $directory = 'system/'.ucfirst($type).'s';
+            $directory = 'app'.DIRECTORY_SEPARATOR.ucfirst($type).'s';
             $name      = ucfirst($name);
-        }
-
-        if ($type == 'framework') {
-            return './speedwork';
         }
 
         if (strpos($name, '-') !== false) {
@@ -120,7 +123,9 @@ class LibraryInstaller extends BaseLibraryInstaller
             $directory = $config->has('directory') ? $config->get('directory') : $directory;
         }
 
-        return $directory.DIRECTORY_SEPARATOR.$name;
+        $basePath = ($this->vendorDir ? $this->vendorDir.'/' : '');
+
+        return $basePath.$directory.'/'.$name;
     }
 
     /**
@@ -153,13 +158,14 @@ class LibraryInstaller extends BaseLibraryInstaller
 
         $name = strtolower($name);
         $type = $package->getType();
-        $type = ltrim($type, 'speedwork-');
+        $type = str_replace('speedwork-', '', $type);
 
-        $assetsDir = 'public/assets/';
-        $assetsDir .= $extra['assets-dir'] ?: ':type/:name';
+        $basePath  = ($this->vendorDir ? $this->vendorDir.'/../' : '');
+        $assetsDir = realpath($basePath.'public/assets/').'/';
+        $assetsDir .= isset($extra['assets-dir']) ? $extra['assets-dir'] : ':type/:name';
 
         $replace = [
-            'type'    => $type.'s',
+            'type'    => $type,
             'name'    => $name,
             'package' => $name,
         ];
@@ -168,30 +174,59 @@ class LibraryInstaller extends BaseLibraryInstaller
             $assetsDir = str_replace(':'.$key, $value, $assetsDir);
         }
 
-        $path = $this->getPackageBasePath($package);
+        $assetsDir .= DIRECTORY_SEPARATOR;
+        $assetsDir = strtolower($assetsDir);
 
-        if ($remove) {
-            foreach ($assets as $asset) {
-                $target = rtrim($assetsDir.$asset['target'], '/');
+        $path = $this->getPackageBasePath($package).DIRECTORY_SEPARATOR;
 
-                if (file_exists($from)) {
-                    $this->filesystem->remove($target);
+        foreach ($assets as $from => $to) {
+            $to   = $assetsDir.$to;
+            $from = $path.$from;
+
+            if ($remove) {
+                $this->removeFiles($from, $to);
+            } else {
+                if ($force) {
+                    $this->removeFiles($from, $to);
+                }
+                $this->copyFiles($from, $to);
+            }
+        }
+    }
+
+    protected function copyFiles($from, $to)
+    {
+        if (is_file($from)) {
+            $this->filesystem->copy($from, $to);
+        } elseif (is_dir($from)) {
+            $this->filesystem->copy($from, $to);
+        } elseif ($files = glob($from)) {
+            foreach ($files as $file) {
+                if (is_dir($file)) {
+                    $this->copyFiles($file, $to.basename($file));
+                } else {
+                    $this->copyFiles($file, $to.basename($file));
                 }
             }
-
-            return true;
         }
+    }
 
-        foreach ($assets as $asset) {
-            $from   = $path.'/'.$asset['name'];
-            $target = rtrim($assetsDir.$asset['target'], '/');
-
-            if (file_exists($from)) {
-                if (file_exists($target) && $force) {
-                    $this->filesystem->remove($target);
-                    $this->filesystem->copy($from, $target);
+    protected function removeFiles($from, $to)
+    {
+        if (is_file($from)) {
+            if (file_exists($to)) {
+                $this->filesystem->remove($to);
+            }
+        } elseif (is_dir($from)) {
+            if (is_dir($to)) {
+                $this->filesystem->remove($to);
+            }
+        } elseif ($files = glob($from)) {
+            foreach ($files as $file) {
+                if (is_dir($file)) {
+                    $this->removeFiles($file, $to.basename($file));
                 } else {
-                    $this->filesystem->copy($from, $target);
+                    $this->removeFiles($file, $to.basename($file));
                 }
             }
         }
